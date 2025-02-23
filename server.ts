@@ -1,14 +1,32 @@
-import express from 'express';
-import path from 'path';
-import type { Request, Response } from 'express';
-
+const express = require('express');
+const path = require('path');
 const app = express();
 
-// Serve static files from the dist directory
-app.use(express.static('dist'));
+// Parse JSON bodies
+app.use(express.json());
+
+// Serve static files from the dist directory with proper headers
+app.use(express.static('dist', {
+  setHeaders: (res, filePath) => {
+    // Set proper MIME types
+    if (filePath.endsWith('.js')) {
+      res.set('Content-Type', 'application/javascript; charset=utf-8');
+    } else if (filePath.endsWith('.css')) {
+      res.set('Content-Type', 'text/css; charset=utf-8');
+    } else if (filePath.endsWith('.html')) {
+      res.set('Content-Type', 'text/html; charset=utf-8');
+    }
+
+    // Set caching headers
+    res.set('Cache-Control', 'public, max-age=3600');
+  },
+  immutable: true,
+  maxAge: '1h'
+}));
 
 // Handle all other routes by serving index.html
-app.get('*', (req: Request, res: Response) => {
+app.get('*', (req, res) => {
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
   res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
 });
 
