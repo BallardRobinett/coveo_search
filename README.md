@@ -2,8 +2,6 @@
 
 [Live version](https://leafy-emblem-451720-h9.ue.r.appspot.com/)
 
-This project served as a starting point for the [Coveo Headless Tutorial](https://levelup.coveo.com/learn/courses/headless-tutorial).
-
 This project was set up with [Vite](https://vitejs.dev/guide/#scaffolding-your-first-vite-project)
 
 ## Setup
