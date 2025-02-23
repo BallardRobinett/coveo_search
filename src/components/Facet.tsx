@@ -1,14 +1,24 @@
-
 import { Facet as FacetController } from '@coveo/headless';
 import { useEffect, useState, FunctionComponent } from 'react';
 import { FacetSearch } from './FacetSearch';
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Checkbox,
+  Button,
+  Box,
+  Divider
+} from '@mui/material';
 
 interface FacetProps {
   controller: FacetController;
   title: string;
 }
 
-const Facet: FunctionComponent<FacetProps> = (props) => { 
+const Facet: FunctionComponent<FacetProps> = (props) => {
   const { controller } = props;
   const [state, setState] = useState(controller.state);
 
@@ -16,41 +26,70 @@ const Facet: FunctionComponent<FacetProps> = (props) => {
 
   if (!state.values.length) {
     return (
-      <div className="facet">
-      <h3>{props.title}</h3>
-      <div>No facet values</div>
-    </div>
+      <Box>
+        <Typography variant="h6" gutterBottom>{props.title}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          No facet values available
+        </Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="facet">
-      <h3>{props.title}</h3>
+    <Box>
+      <Typography variant="h6" gutterBottom>{props.title}</Typography>
+      
       <FacetSearch
-        controller={controller.facetSearch} 
-        facetSearchState={state.facetSearch} 
+        controller={controller.facetSearch}
+        facetSearchState={state.facetSearch}
       />
-      <ul>
+      
+      <List dense>
         {state.values.map((value) => (
-          <li key={value.value}>
-            <input
-              type="checkbox"
-              checked={controller.isValueSelected(value)}
-              onChange={() => controller.toggleSelect(value)}
-              disabled={state.isLoading}
+          <ListItem
+            key={value.value}
+            dense
+            disablePadding
+          >
+            <ListItemIcon sx={{ minWidth: 36 }}>
+              <Checkbox
+                edge="start"
+                checked={controller.isValueSelected(value)}
+                onChange={() => controller.toggleSelect(value)}
+                disabled={state.isLoading}
+                size="small"
+              />
+            </ListItemIcon>
+            <ListItemText 
+              primary={value.value}
+              secondary={`(${value.numberOfResults})`}
             />
-            {value.value} ({value.numberOfResults})
-          </li>
+          </ListItem>
         ))}
-      </ul>
-      {state.canShowMoreValues && (
-        <button onClick={() => controller.showMoreValues()}>Show More</button>
-      )}
-      {state.canShowLessValues && (
-        <button onClick={() => controller.showLessValues()}>Show Less</button>
-      )}
-    </div>
+      </List>
+      
+      <Divider sx={{ my: 1 }} />
+      
+      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+        {state.canShowMoreValues && (
+          <Button 
+            size="small"
+            onClick={() => controller.showMoreValues()}
+          >
+            Show More
+          </Button>
+        )}
+        {state.canShowLessValues && (
+          <Button
+            size="small"
+            onClick={() => controller.showLessValues()}
+          >
+            Show Less
+          </Button>
+        )}
+      </Box>
+    </Box>
   );
-}
+};
 
 export default Facet;
