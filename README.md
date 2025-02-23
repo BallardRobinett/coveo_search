@@ -1,6 +1,6 @@
 # Coveo Headless React Starter Project
 
-Live version at [here!](https://leafy-emblem-451720-h9.ue.r.appspot.com/)
+[Live version](https://leafy-emblem-451720-h9.ue.r.appspot.com/)
 
 This project served as a starting point for the [Coveo Headless Tutorial](https://levelup.coveo.com/learn/courses/headless-tutorial).
 
